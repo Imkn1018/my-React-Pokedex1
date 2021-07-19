@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Layout } from '../Templates/Layout';
 import { useGetData } from '../../Hooks/useGetData';
 import { PokemonCard } from '../Organisms/PokemonCard';
@@ -13,34 +13,12 @@ import gen6 from '../../data/gen6-jp.json';
 import gen7 from '../../data/gen7-jp.json';
 import gen8 from '../../data/gen8-jp.json';
 
-const fs = require('fs');
-const allPokemon = [
-  ...gen1,
-  ...gen2,
-  ...gen3,
-  ...gen4,
-  ...gen5,
-  ...gen6,
-  ...gen7,
-  ...gen8,
-];
-
 export const Top = () => {
   const { getPokemon, pokemon, loading } = useGetData();
-  const onClickGetPoke = useCallback(() => {
-    getPokemon();
-    console.log(pokemon);
-  }, []);
 
-  useEffect(() => {
-    allPokemon.filter((gen) => {
-      return (gen.tms.length = 0);
-    });
-    console.log(allPokemon);
-  }, []);
+  useEffect(() => getPokemon(), []);
   return (
     <Layout>
-      <button onClick={onClickGetPoke}>Click</button>
       {loading ? (
         <div>loading</div>
       ) : (
@@ -50,6 +28,7 @@ export const Top = () => {
           imageUrl="https://assets.pokemon.com/assets/cms2/img/pokedex/detail/001.png"
         /> */}
           {/* もし日本語のやつであるならば、ここでnoの値を基に並び替え作業が必要？ */}
+          {/* そもそも日本語でなければ撮ってくる必要ない？ */}
           {pokemon.map((pokeman, i) => (
             <WrapItem key={pokeman.url}>
               <Link to={`/pokemon?id=${i + 1}`}>
